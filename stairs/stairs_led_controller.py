@@ -14,7 +14,8 @@ class LEDController:
         self.stairs = Stairs(" LED  ", "led")
         self.stairs.init("conf/program/fade/step_sleep", 0.005)
         self.stairs.init("conf/program/static/color", (d(1),d(1),d(1)))
-        self.stairs.init("conf/program", "fadeBRG")
+        self.stairs.init("conf/program", "fadeBRG", True)
+        self.stairs.init("conf/program/police/time", 0.2)
         self.stairs.init("conf/program/fade/lastcolor", (d(0),d(0),d(0)))
         self.led = RGBLED(26, 19, 13)
         self.check_period = 0
@@ -125,11 +126,27 @@ class LEDController:
                 self.__led__(newcolor)
                 color = newcolor
 
+    def police(self):
+        self.stairs.log("[POLICE] started")
+        color = ((1,0,0), (0,0,1))
+        i = 0
+        time = 0
+        while True:
+            self.__led__(color[i])
+            self.sleep(0.1)
+            time = time + 0.1
+            if time > self.stairs.get("conf/program/police/time"):
+                time = 0
+                i = (i + 1) % 2
+            if self.exitNow:
+                self.stairs.log("[POLICE] terminated")
+                return
+                
     def main(self):
         while True:
             if self.stairs.getExternal("sensors", "out/activated"):
                 program = self.stairs.get("conf/program")
-                if program in ["static", "fadeBRG"]:
+                if program in ["static", "fadeBRG", "police"]:
                     self.currentProgram = program
                     getattr(self, program)()
                     self.__led__((0,0,0))
