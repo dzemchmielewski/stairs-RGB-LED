@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import pylibmc
-from decimal import Decimal as d
 
 class Stairs:
     def __init__(self, logname, code):
@@ -18,6 +17,14 @@ class Stairs:
     def get(self, name):
         return self.mc.get(self.code + "/" + name)
 
+    def getBool(self, name):
+        value = self.mc.get(self.code + "/" + name)
+        if str(value).lower() in ("yes", "y", "true",  "t", "1"):
+            return True
+        if str(value).lower() in ("no",  "n", "false", "f", "0", "0.0", "", "none", "[]", "{}"):
+            return False
+        raise Exception('Invalid value for boolean conversion: ' + str(value))
+
     def set(self, name, value):
         self.mc.set(self.code + "/" + name, value)
 
@@ -30,5 +37,5 @@ class Stairs:
             self.set(name, value)
         else:
             self.log("CONFIGURATION: " + self.code + "/" + name + ": " + str(self.get(name)))
-
+            
 

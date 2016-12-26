@@ -3,7 +3,6 @@
 from gpiozero import RGBLED
 from time import sleep
 from decimal import Decimal as d
-import threading
 from stairs import Stairs
 import random
 
