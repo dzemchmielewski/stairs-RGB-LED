@@ -13,7 +13,8 @@ class LEDController:
         self.stairs = Stairs(" LED  ", "led")
         self.stairs.init("conf/program/fade/step_sleep", 0.005)
         self.stairs.init("conf/program/static/color", (d(1),d(1),d(1)))
-        self.stairs.init("conf/program", "fadeBRG", True)
+        #self.stairs.init("conf/program", "fadeBRG", True)
+        self.stairs.init("conf/program", "static", True)
         self.stairs.init("conf/program/police/time", 0.2)
         self.stairs.init("conf/program/fade/lastcolor", (d(0),d(0),d(0)))
         self.led = RGBLED(26, 19, 13)
@@ -113,7 +114,7 @@ class LEDController:
         color = self.stairs.get("conf/program/static/color")
         newcolor = color
         self.stairs.log("[STATIC] color: " + str(color))
-        self.__led__(newcolor)
+        self.__fade_in__(newcolor)
         while True:
             self.sleep(0.1)
             if self.exitNow:
