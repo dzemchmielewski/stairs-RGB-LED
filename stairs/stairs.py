@@ -31,6 +31,9 @@ class Stairs:
     def getExternal(self, external_code, name):
         return self.mc.get(external_code + "/" + name)
 
+    def setExternal(self, external_code, name, value):
+        return self.mc.set(external_code + "/" + name, value)
+
     def init(self, name, value, force = False):
         if force or self.get(name) is None:
             self.log("INITIALIZE: " + self.code + "/" + name + ": " + str(value))
