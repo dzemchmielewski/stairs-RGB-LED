@@ -61,7 +61,11 @@ class MOTIONDetector:
                     if (current_time > start_active + timedelta(seconds=self.stairs.get("conf/active_time"))):
                         self.stairs.set("out/activated", False)
                         self.stairs.log("[    ] Deactivated!", current_time)
-
+                        
+            elif not self.stairs.getBool("conf/sensors_isON"):
+                if self.stairs.getBool("out/activated"):
+                    self.stairs.setBool("out/activated", False)
+                        
         self.stairs.log("[    ] END!")
 
 if __name__ == "__main__":
