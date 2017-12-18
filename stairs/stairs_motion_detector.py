@@ -64,7 +64,7 @@ class MOTIONDetector:
                         
             elif not self.stairs.getBool("conf/sensors_isON"):
                 if self.stairs.getBool("out/activated"):
-                    self.stairs.setBool("out/activated", False)
+                    self.stairs.set("out/activated", False)
                         
         self.stairs.log("[    ] END!")
 
